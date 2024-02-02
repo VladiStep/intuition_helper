@@ -1,16 +1,17 @@
 <template>
-    <TextField @change="test" v-model="text" />
+    <TextField v-model="text" />
+    <SVGIcon class="icon" name="mic" :color="text" />
 </template>
 
 <style lang="scss" scoped>
-
+    .icon {
+        width: 32px;
+        height: 32px;
+    }
 </style>
 
 <script setup lang="ts">
-import { ref } from 'vue';
+    import { ref } from 'vue';
 
-const test = () => {
-    alert("change");
-};
-const text = ref("1234567890123456\n123\n123\n123\n123\n123");
+    const text = ref("");
 </script>
