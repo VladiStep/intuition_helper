@@ -2,6 +2,8 @@ import { createApp } from "vue";
 import Btn from './components/Btn.vue';
 import TextField from './components/TextField.vue';
 import SVGIcon from './components/SVGIcon.vue';
+import Question from './components/Question.vue';
+import SceneFirst from './components/SceneFirst.vue';
 
 // Устанавливаем глобальные параметры
 (global as any).__VUE_OPTIONS_API__ = false;
@@ -18,5 +20,7 @@ const app = createApp(App);
 app.component('Btn', Btn);
 app.component('TextField', TextField);
 app.component('SVGIcon', SVGIcon);
+app.component('Question', Question);
+app.component('SceneFirst', SceneFirst);
 
 app.mount(container);

@@ -1,17 +1,24 @@
 <template>
-    <TextField v-model="text" />
-    <SVGIcon class="icon" name="mic" :color="text" />
+    <component id="mainCont" :is="currentScene" />
 </template>
 
 <style lang="scss" scoped>
-    .icon {
-        width: 32px;
-        height: 32px;
+    #mainCont {
+        background-color: #ffffff;
+        font-family: Arial, Helvetica, sans-serif;
+        font-weight: normal;
+        font-size: 26px;
+        width: 650px;
+        height: 500px;
+        //height: 100px;
     }
 </style>
 
 <script setup lang="ts">
     import { ref } from 'vue';
 
-    const text = ref("");
+    /** Список введённых вопросов */
+    const questions = ref(new Array<string>());
+
+    const currentScene = ref("SceneFirst");
 </script>

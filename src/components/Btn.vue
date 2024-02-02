@@ -7,10 +7,11 @@
 
 <style lang="scss" scoped>
     .button {
-        padding: 15px 15px 4px 4px;
+        padding: 4px 15px 4px 15px;
         border-radius: 10px;
         background-color: lightblue;
         transition: all 0.2s ease-in-out;
+        font-size: 18px;
 
         &:not([disabled]) {
             cursor: pointer;

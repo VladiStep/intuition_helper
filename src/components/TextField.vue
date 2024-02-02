@@ -5,6 +5,7 @@
 <style lang="scss" scoped>
     .textarea {
         resize: none;
+        box-sizing: border-box;
         border-radius: 10px;
         padding: 6px;
         width: 256px;
