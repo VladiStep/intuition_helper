@@ -1,5 +1,6 @@
 import { createApp } from "vue";
-import Btn from './components/Btn.vue'
+import Btn from './components/Btn.vue';
+import TextField from './components/TextField.vue';
 
 // Устанавливаем глобальные параметры
 (global as any).__VUE_OPTIONS_API__ = false;
@@ -11,5 +12,9 @@ const container = document.getElementById("appCont") as HTMLDivElement;
 // Создаём vue-приложение
 import App from "./App.vue";
 const app = createApp(App);
-app.component('Btn', Btn); // Сделать "Btn" доступным везде
+
+// Сделать пользовательские компоненты доступными везде ("глобальными")
+app.component('Btn', Btn);
+app.component('TextField', TextField);
+
 app.mount(container);
