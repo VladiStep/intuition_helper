@@ -2,9 +2,9 @@
     <div class="sceneCont">
         <div class="title">Помощник интуиции</div>
         <div class="buttonsCont">
-            <Btn @click="">Следующий шаг</Btn>
-            <Btn @click="">Как пользоваться?</Btn>
-            <Btn @click="">Добавить вопрос</Btn>
+            <Btn @click="handleNextBtnClick">Следующий шаг</Btn>
+            <Btn @click="handleManualBtnClick">Как пользоваться?</Btn>
+            <Btn @click="handleAddBtnClick">Добавить вопрос</Btn>
         </div>
         <div class="questionsCont">
             <div class="questionCont" v-for="(question, index) in questions">
@@ -53,4 +53,16 @@
 
     /** Список введённых вопросов */
     const questions = ref(["1234556", "134215211"]);
+
+    const handleNextBtnClick = () => {
+
+    };
+
+    const handleManualBtnClick = () => {
+
+    };
+
+    const handleAddBtnClick = () => {
+
+    };
 </script>

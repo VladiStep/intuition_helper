@@ -56,7 +56,7 @@
 <script setup lang="ts">
     import { ref } from 'vue';
     
-    const questionText = defineModel<string>();
+    const questionText = defineModel<string>("questionText");
 
     const fillRandomly = () => {
 
