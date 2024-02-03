@@ -2,13 +2,13 @@
     <div class="sceneCont">
         <div class="title">Помощник интуиции</div>
         <div class="buttonsCont">
-            <Btn @click="handleNextBtnClick">Следующий шаг</Btn>
-            <Btn @click="handleManualBtnClick">Как пользоваться?</Btn>
-            <Btn @click="handleAddBtnClick">Добавить вопрос</Btn>
+            <Btn @click="nextBtnClickHandler">Следующий шаг</Btn>
+            <Btn @click="manualBtnClickHandler">Как пользоваться?</Btn>
+            <Btn @click="addBtnClickHandler">Добавить вопрос</Btn>
         </div>
         <div class="questionsCont">
             <div class="questionCont" v-for="(question, index) in questions">
-                <Question :questionText="question" />
+                <Question :questionText="question" @onRemoveClick="removeQuestClickHandler(index)" />
             </div>
         </div>
     </div>
@@ -42,9 +42,12 @@
         flex-direction: column;
         padding: 2px;
         gap: 20px;
+        overflow-y: overlay;
+        min-height: 250px;
     }
     .questionCont {
         height: 100px;
+        flex-shrink: 0;
     }
 </style>
 
@@ -54,15 +57,18 @@
     /** Список введённых вопросов */
     const questions = ref(["1234556", "134215211"]);
 
-    const handleNextBtnClick = () => {
+    const nextBtnClickHandler = () => {
 
     };
 
-    const handleManualBtnClick = () => {
+    const manualBtnClickHandler = () => {
 
     };
 
-    const handleAddBtnClick = () => {
-
+    const addBtnClickHandler = () => {
+        questions.value.push("");
+    };
+    const removeQuestClickHandler = (questionIndex: number) => {
+        questions.value.splice(questionIndex, 1);
     };
 </script>

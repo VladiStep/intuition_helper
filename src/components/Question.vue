@@ -2,10 +2,13 @@
     <div class="cont">
         <TextField class="textField" v-model="questionText" />
         <div class="buttonsCont">
-            <SVGIcon class="button" name="random" color="blue" title="Заполнить случайным образом"
-                     @click="" />
-            <SVGIcon class="button" name="cross" color="red" title="Удалить вопрос"
-                     @click="" />
+            <button class="button" @click="handleRandBtnClick">
+                <SVGIcon name="random" color="blue" title="Заполнить случайным образом" />
+            </button>
+            <button class="button" @click="$emit('onRemoveClick')">
+                <SVGIcon name="cross" color="red" title="Удалить вопрос" />
+            </button>
+            
         </div>
     </div>
 </template>
@@ -28,7 +31,7 @@
     }
 
     .buttonsCont {
-        max-width: 32px;
+        max-width: 34px;
         width: 8%;
         height: 100%;
         display: flex;
@@ -39,8 +42,10 @@
     .button {
         width: 100%;
         aspect-ratio: 1 / 1;
-        border: solid black 1px;
-        box-sizing: border-box;
+        border-radius: 0px;
+        border-width: 1px;
+        padding: 0px;
+        line-height: 0px;
         transition: all 0.2s ease-in-out;
 
         &:not([disabled]) {
@@ -57,8 +62,9 @@
     import { ref } from 'vue';
     
     const questionText = defineModel<string>("questionText");
+    defineEmits(["onRemoveClick"]);
 
-    const fillRandomly = () => {
+    const handleRandBtnClick = () => {
 
     };
 </script>
