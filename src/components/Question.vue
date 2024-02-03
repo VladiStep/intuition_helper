@@ -1,6 +1,6 @@
 <template>
     <div class="cont">
-        <TextField class="textField" v-model="questionText" />
+        <TextField class="textField" v-model="questionText" placeholder="Введите текст вопроса..." />
         <div class="buttonsCont">
             <button class="button" @click="handleRandBtnClick">
                 <SVGIcon name="random" color="blue" title="Заполнить случайным образом" />
@@ -25,7 +25,7 @@
     .textField {
         flex-grow: 1;
         height: 100%;
-        margin-right: 2%;
+        margin-right: 1%;
         font-size: 16px;
         font-family: inherit;
     }

@@ -1,7 +1,7 @@
 <template>
     <Transition name="modal">
         <div class="modalMask" v-if="show">
-            <div class="modalWrapper" @click="$emit('close')">
+            <div class="modalWrapper" @click="closeHandler">
                 <div class="modalContainer" @click.stop>
                     <div class="modalHeader">
                         {{ header }}
@@ -13,9 +13,8 @@
 
                     <div class="modalFooter">
                         {{ footer }}
-                        <Btn class="modalDefaultButton" @click="$emit('close')">OK</Btn>
+                        <Btn class="modalDefaultButton" @click="closeHandler">OK</Btn>
                     </div>
-                    
                 </div>
             </div>
         </div>
@@ -89,10 +88,16 @@
 </style>
 
 <script setup lang="ts">
-    defineEmits(['close']);
+    const emit = defineEmits(['close']);
+
+    const show = defineModel<boolean>("show");
+
+    const closeHandler = () => {
+        show.value = false;
+        emit('close');
+    };
 
     const props = defineProps({
-        show: Boolean,
         header: {
             type: String,
             default() {

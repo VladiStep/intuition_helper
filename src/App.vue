@@ -1,7 +1,7 @@
 <template>
     <component id="mainCont" :is="currentScene" />
     <Teleport to="body">
-        <ModalWindow ref="modalWindow" :show="showModal" @close="showModal = false"
+        <ModalWindow ref="modalWindow" :show="showModal"
                      :header="modalHeader" :text="modalText" :footer="modalFooter" />
     </Teleport>
     
@@ -33,6 +33,11 @@
     const goToNextScene = () => {
         if (currentSceneIndex.value < scenes.length - 1) {
             currentSceneIndex.value++;
+        }
+    };
+    const goToPrevScene = () => {
+        if (currentSceneIndex.value > 0) {
+            currentSceneIndex.value--;
         }
     };
 

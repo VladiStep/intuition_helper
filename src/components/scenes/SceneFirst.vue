@@ -7,7 +7,7 @@
             <Btn @click="addBtnClickHandler">Добавить вопрос</Btn>
         </div>
         <div class="questionsCont">
-            <div class="questionCont" v-for="(question, index) in questions">
+            <div class="questionCont" v-for="(question, index) in questions" :key="index">
                 <Question :questionText="question" @onRemoveClick="removeQuestClickHandler(index)" />
             </div>
         </div>
@@ -62,13 +62,16 @@
     };
 
     const manualBtnClickHandler = () => {
-
+        
     };
 
+    // От 2 до 6 вопросов
     const addBtnClickHandler = () => {
-        questions.value.push("");
+        if (questions.value.length < 6)
+            questions.value.push("");
     };
     const removeQuestClickHandler = (questionIndex: number) => {
-        questions.value.splice(questionIndex, 1);
+        if (questions.value.length > 2)
+            questions.value.splice(questionIndex, 1);
     };
 </script>
