@@ -40,10 +40,11 @@
         flex-grow: 1;
         display: flex;
         flex-direction: column;
+        padding: 2px;
+        gap: 20px;
     }
     .questionCont {
         height: 100px;
-        margin-bottom: 20px;
     }
 </style>
 

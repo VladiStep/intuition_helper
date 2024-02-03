@@ -8,9 +8,11 @@
         font-family: Arial, Helvetica, sans-serif;
         font-weight: normal;
         font-size: 26px;
-        width: 650px;
-        height: 500px;
-        //height: 100px;
+        width: 100%;
+        height: 100%;
+        min-width: 600px;
+        max-width: 850px;
+        max-height: 350px;
     }
 </style>
 

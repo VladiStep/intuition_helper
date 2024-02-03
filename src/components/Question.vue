@@ -20,7 +20,7 @@
     }
 
     .textField {
-        width: 90%;
+        flex-grow: 1;
         height: 100%;
         margin-right: 2%;
         font-size: 16px;
@@ -28,6 +28,7 @@
     }
 
     .buttonsCont {
+        max-width: 32px;
         width: 8%;
         height: 100%;
         display: flex;
