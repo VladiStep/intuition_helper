@@ -8,7 +8,7 @@
         </div>
         <div class="questionsCont">
             <div class="questionCont" v-for="(question, index) in questions" :key="index">
-                <Question :questionText="question" @onRemoveClick="removeQuestClickHandler(index)" />
+                <Question :questionText="question.text" @onRemoveClick="removeQuestClickHandler(index)" />
             </div>
         </div>
 
@@ -54,12 +54,29 @@
 </style>
 
 <script setup lang="ts">
-    import { computed, ref } from 'vue';
+    import { computed, reactive, ref } from 'vue';
+
+    class Question {
+        id: number;
+        text: string;
+        static lastId: number = 0;
+
+        constructor(text: string = "") {
+            this.id = Question.lastId++;
+            this.text = text;
+        }
+    }
+
+    const minQuestionCount = 2;
+    const maxQuestionCount = 6;
 
     const showModal = ref(false);
 
     /** Список введённых вопросов */
-    const questions = ref(["1234556", "134215211"]);
+    const questions = reactive<Question[]>(new Array<Question>(minQuestionCount));
+    for (let i = 0; i < minQuestionCount; i++)
+        questions[i] = new Question();
+    console.log(Array.from(questions));
 
     const nextBtnClickHandler = () => {
 
@@ -69,21 +86,24 @@
         showModal.value = true;
     };
 
-    const nextBtnDisabled = computed(() => {
-        return questions.value.every(q => q.length === 0);
-    });
+    const nextBtnDisabled = ref(true);
 
     const addBtnDisabled = computed(() => {
-        return questions.value.length == 6;
+        return questions.length == maxQuestionCount;
     });
 
-    // От 2 до 6 вопросов
     const addBtnClickHandler = () => {
-        if (questions.value.length < 6)
-            questions.value.push("");
+        if (questions.length < maxQuestionCount)
+            questions.push(new Question());
     };
     const removeQuestClickHandler = (questionIndex: number) => {
-        if (questions.value.length > 2)
-            questions.value.splice(questionIndex, 1);
+        if (questions.length > minQuestionCount) {
+            questions.splice(questionIndex, 1);
+            Question.lastId--;
+        }
+    };
+    const questTextInputHandler = () => {
+        nextBtnDisabled.value = questions.every(q => q.text.length === 0);
+        console.log(nextBtnDisabled.value);
     };
 </script>
