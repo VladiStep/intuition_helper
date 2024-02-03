@@ -1,24 +1,26 @@
 <template>
-    <Transition name="modal">
-        <div class="modalMask" v-if="show">
-            <div class="modalWrapper" @click="closeHandler">
-                <div class="modalContainer" @click.stop>
-                    <div class="modalHeader">
-                        {{ header }}
-                    </div>
+    <Teleport to="body">
+        <Transition name="modal">
+            <div class="modalMask" v-if="showModal">
+                <div class="modalWrapper" @click="closeHandler">
+                    <div class="modalContainer" @click.stop>
+                        <div class="modalHeader">
+                            {{ header }}
+                        </div>
 
-                    <div class="modalBody">
-                        {{ text }}
-                    </div>
+                        <div class="modalBody">
+                            {{ text }}
+                        </div>
 
-                    <div class="modalFooter">
-                        {{ footer }}
-                        <Btn class="modalDefaultButton" @click="closeHandler">OK</Btn>
+                        <div class="modalFooter">
+                            {{ footer }}
+                            <Btn class="modalDefaultButton" @click="closeHandler">OK</Btn>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-    </Transition>
+        </Transition>
+    </Teleport>
 </template>
 
 <style lang="scss" scoped>
@@ -90,10 +92,10 @@
 <script setup lang="ts">
     const emit = defineEmits(['close']);
 
-    const show = defineModel<boolean>("show");
+    const showModal = defineModel<boolean>();
 
     const closeHandler = () => {
-        show.value = false;
+        showModal.value = false;
         emit('close');
     };
 

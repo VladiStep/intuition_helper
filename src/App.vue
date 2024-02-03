@@ -1,10 +1,5 @@
 <template>
     <component id="mainCont" :is="currentScene" />
-    <Teleport to="body">
-        <ModalWindow ref="modalWindow" :show="showModal"
-                     :header="modalHeader" :text="modalText" :footer="modalFooter" />
-    </Teleport>
-    
 </template>
 
 <style lang="scss" scoped>
@@ -23,12 +18,7 @@
 
 <script setup lang="ts">
     import { computed, ref } from 'vue';
-
-    const showModal = ref(false);
-    const modalHeader = ref("");
-    const modalText = ref("");
-    const modalFooter = ref("");
-
+    
     const scenes = ["SceneFirst"];
     const goToNextScene = () => {
         if (currentSceneIndex.value < scenes.length - 1) {
@@ -40,14 +30,6 @@
             currentSceneIndex.value--;
         }
     };
-
-    function showMessage(message: string, title: string = "Сообщение", lowerText: string = "") {
-        modalHeader.value = title;
-        modalText.value = message;
-        modalFooter.value = lowerText;
-
-        showModal.value = true;
-    }
 
     /** Список введённых вопросов */
     const questions = ref(new Array<string>());

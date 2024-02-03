@@ -2,15 +2,17 @@
     <div class="sceneCont">
         <div class="title">Помощник интуиции</div>
         <div class="buttonsCont">
-            <Btn @click="nextBtnClickHandler">Следующий шаг</Btn>
+            <Btn @click="nextBtnClickHandler" :disabled="nextBtnDisabled">Следующий шаг</Btn>
             <Btn @click="manualBtnClickHandler">Как пользоваться?</Btn>
-            <Btn @click="addBtnClickHandler">Добавить вопрос</Btn>
+            <Btn @click="addBtnClickHandler" :disabled="addBtnDisabled">Добавить вопрос</Btn>
         </div>
         <div class="questionsCont">
             <div class="questionCont" v-for="(question, index) in questions" :key="index">
                 <Question :questionText="question" @onRemoveClick="removeQuestClickHandler(index)" />
             </div>
         </div>
+
+        <ModalWindow ref="modalWindow" v-model="showModal" />
     </div>
 </template>
 
@@ -52,7 +54,9 @@
 </style>
 
 <script setup lang="ts">
-    import { ref } from 'vue';
+    import { computed, ref } from 'vue';
+
+    const showModal = ref(false);
 
     /** Список введённых вопросов */
     const questions = ref(["1234556", "134215211"]);
@@ -62,8 +66,16 @@
     };
 
     const manualBtnClickHandler = () => {
-        
+        showModal.value = true;
     };
+
+    const nextBtnDisabled = computed(() => {
+        return questions.value.every(q => q.length === 0);
+    });
+
+    const addBtnDisabled = computed(() => {
+        return questions.value.length == 6;
+    });
 
     // От 2 до 6 вопросов
     const addBtnClickHandler = () => {
