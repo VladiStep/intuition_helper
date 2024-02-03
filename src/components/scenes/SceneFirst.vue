@@ -8,7 +8,8 @@
         </div>
         <div class="questionsCont">
             <div class="questionCont" v-for="(question, index) in questions" :key="index">
-                <Question :questionText="question.text" @onRemoveClick="removeQuestClickHandler(index)" />
+                <Question :question="question" @onRemoveClick="removeQuestClickHandler(index)"
+                          @onTextInput="questTextInputHandler" />
             </div>
         </div>
 
@@ -54,9 +55,10 @@
 </style>
 
 <script setup lang="ts">
-    import { computed, reactive, ref } from 'vue';
+    import { computed, ref } from 'vue';
 
-    class Question {
+    // "v-for" не поддерживает пользовательские классы (выдаёт ошибку)
+    /*class Question {
         id: number;
         text: string;
         static lastId: number = 0;
@@ -65,7 +67,8 @@
             this.id = Question.lastId++;
             this.text = text;
         }
-    }
+    }*/
+    let lastQuestId = 0;
 
     const minQuestionCount = 2;
     const maxQuestionCount = 6;
@@ -73,10 +76,9 @@
     const showModal = ref(false);
 
     /** Список введённых вопросов */
-    const questions = reactive<Question[]>(new Array<Question>(minQuestionCount));
+    const questions = ref(new Array<{id: number, text: string}>(minQuestionCount));
     for (let i = 0; i < minQuestionCount; i++)
-        questions[i] = new Question();
-    console.log(Array.from(questions));
+        questions.value[i] = { id: lastQuestId++, text: "" };
 
     const nextBtnClickHandler = () => {
 
@@ -89,21 +91,22 @@
     const nextBtnDisabled = ref(true);
 
     const addBtnDisabled = computed(() => {
-        return questions.length == maxQuestionCount;
+        return questions.value.length == maxQuestionCount;
     });
 
     const addBtnClickHandler = () => {
-        if (questions.length < maxQuestionCount)
-            questions.push(new Question());
+        if (questions.value.length < maxQuestionCount)
+            questions.value.push({ id: lastQuestId++, text: "" });
     };
+
     const removeQuestClickHandler = (questionIndex: number) => {
-        if (questions.length > minQuestionCount) {
-            questions.splice(questionIndex, 1);
-            Question.lastId--;
+        if (questions.value.length > minQuestionCount) {
+            questions.value.splice(questionIndex, 1);
+            lastQuestId--;
         }
     };
+    
     const questTextInputHandler = () => {
-        nextBtnDisabled.value = questions.every(q => q.text.length === 0);
-        console.log(nextBtnDisabled.value);
+        nextBtnDisabled.value = questions.value.some(q => q.text.length === 0);
     };
 </script>

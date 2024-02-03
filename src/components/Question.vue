@@ -1,7 +1,7 @@
 <template>
     <div class="cont">
         <TextField class="textField" v-model="questionText" placeholder="Введите текст вопроса..."
-                   @input="$emit('onTextInput')" />
+                   @input="textInputHandler" />
         <div class="buttonsCont">
             <button class="button" @click="handleRandBtnClick">
                 <SVGIcon name="random" color="blue" title="Заполнить случайным образом" />
@@ -60,12 +60,20 @@
 </style>
 
 <script setup lang="ts">
-    import { ref } from 'vue';
-    
+    const question = defineModel<{id: number, text: string}>("question");
     const questionText = defineModel<string>("questionText");
-    defineEmits(["onRemoveClick", "onTextInput"]);
+    const emit = defineEmits(["onRemoveClick", "onTextInput"]);
 
     const handleRandBtnClick = () => {
 
+    };
+
+    const textInputHandler = () => {
+        if (question.value !== undefined
+            && questionText.value !== undefined) {
+            question.value.text = questionText.value;
+        }
+
+        emit('onTextInput');
     };
 </script>
