@@ -1,13 +1,13 @@
 <template>
     <div class="cont">
-        <TextField class="textField" v-model="questionText" placeholder="Введите текст вопроса..."
-                   @input="textInputHandler" />
+        <TextField class="textField" v-model="question!.text" placeholder="Введите текст вопроса..."
+                   @input="$emit('onTextInput')" />
         <div class="buttonsCont">
             <button class="button" @click="handleRandBtnClick">
                 <SVGIcon name="random" color="blue" title="Заполнить случайным образом" />
             </button>
-            <button class="button" @click="$emit('onRemoveClick')">
-                <SVGIcon name="cross" color="red" title="Удалить вопрос" />
+            <button class="button" :disabled="canRemove" @click="$emit('onRemoveClick')">
+                <SVGIcon name="cross" color="red" title="Удалить вопрос" :disabled="canRemove" />
             </button>
             
         </div>
@@ -61,19 +61,12 @@
 
 <script setup lang="ts">
     const question = defineModel<{id: number, text: string}>("question");
-    const questionText = defineModel<string>("questionText");
+    const props = defineProps({
+       canRemove: Boolean 
+    });
     const emit = defineEmits(["onRemoveClick", "onTextInput"]);
 
     const handleRandBtnClick = () => {
 
-    };
-
-    const textInputHandler = () => {
-        if (question.value !== undefined
-            && questionText.value !== undefined) {
-            question.value.text = questionText.value;
-        }
-
-        emit('onTextInput');
     };
 </script>

@@ -6,7 +6,7 @@ import SVGIcon from './components/SVGIcon.vue';
 import Question from './components/Question.vue';
 import ModalWindow from './components/ModalWindow.vue';
 
-import SceneFirst from './components/scenes/SceneFirst.vue';
+import StartScene from './components/scenes/StartScene.vue';
 
 // Устанавливаем глобальные параметры
 (global as any).__VUE_OPTIONS_API__ = false;
@@ -25,6 +25,7 @@ app.component('TextField', TextField);
 app.component('SVGIcon', SVGIcon);
 app.component('Question', Question);
 app.component('ModalWindow', ModalWindow);
-app.component('SceneFirst', SceneFirst);
+
+app.component('StartScene', StartScene);
 
 app.mount(container);

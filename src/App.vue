@@ -1,5 +1,5 @@
 <template>
-    <component id="mainCont" :is="currentScene" />
+    <component id="mainCont" :is="store.currentScene.value" />
 </template>
 
 <style lang="scss" scoped>
@@ -17,23 +17,10 @@
 </style>
 
 <script setup lang="ts">
-    import { computed, ref } from 'vue';
-    
-    const scenes = ["SceneFirst"];
-    const goToNextScene = () => {
-        if (currentSceneIndex.value < scenes.length - 1) {
-            currentSceneIndex.value++;
-        }
-    };
-    const goToPrevScene = () => {
-        if (currentSceneIndex.value > 0) {
-            currentSceneIndex.value--;
-        }
-    };
+    import { reactive } from 'vue';
+    import { store } from './store.ts';
 
-    /** Список введённых вопросов */
-    const questions = ref(new Array<string>());
-
-    const currentSceneIndex = ref(0);
-    const currentScene = computed(() => scenes[currentSceneIndex.value]);
+    store.questions = reactive(new Array<{id: number, text: string}>(store.minQuestionCount));
+    for (let i = 0; i < store.minQuestionCount; i++)
+        store.questions[i] = reactive({ id: store.lastQuestionId++, text: "" });
 </script>

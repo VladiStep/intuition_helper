@@ -1,12 +1,14 @@
 <template>
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960" :opacity="opacity">
         <title>{{ title }}</title>
         <path :d="currSVGPath" :fill="color" />
     </svg>
 </template>
 
 <style lang="scss" scoped>
-
+    svg {
+        transition: all 0.2s ease-in-out;
+    }
 </style>
 
 <script setup lang="ts">
@@ -27,8 +29,11 @@
                 return "gray";
             }
         },
+        disabled: Boolean,
         title: String
     });
+
+    const opacity = computed(() => props.disabled ? 0.5 : 1);
 
     const currSVGPath = computed(() => svgPathDict.get(props.name));
     const svgPathDict = new Map<string, string>([

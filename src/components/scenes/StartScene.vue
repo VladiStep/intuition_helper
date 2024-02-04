@@ -7,9 +7,8 @@
             <Btn @click="addBtnClickHandler" :disabled="addBtnDisabled">Добавить вопрос</Btn>
         </div>
         <div class="questionsCont">
-            <div class="questionCont" v-for="(question, index) in questions" :key="index">
-                <Question :question="question" @onRemoveClick="removeQuestClickHandler(index)"
-                          @onTextInput="questTextInputHandler" />
+            <div class="questionCont" v-for="(question, index) in store.questions" :key="index">
+                <Question :question="question" :canRemove="canRemove" @onRemoveClick="removeQuestClickHandler(index)" />
             </div>
         </div>
 
@@ -55,33 +54,13 @@
 </style>
 
 <script setup lang="ts">
-    import { computed, ref } from 'vue';
-
-    // "v-for" не поддерживает пользовательские классы (выдаёт ошибку)
-    /*class Question {
-        id: number;
-        text: string;
-        static lastId: number = 0;
-
-        constructor(text: string = "") {
-            this.id = Question.lastId++;
-            this.text = text;
-        }
-    }*/
-    let lastQuestId = 0;
-
-    const minQuestionCount = 2;
-    const maxQuestionCount = 6;
+    import { computed, ref, watch } from 'vue';
+    import { store } from './../../store.ts';
 
     const showModal = ref(false);
 
-    /** Список введённых вопросов */
-    const questions = ref(new Array<{id: number, text: string}>(minQuestionCount));
-    for (let i = 0; i < minQuestionCount; i++)
-        questions.value[i] = { id: lastQuestId++, text: "" };
-
     const nextBtnClickHandler = () => {
-
+        store.currentScene.value = "QuestionsScene";
     };
 
     const manualBtnClickHandler = () => {
@@ -91,22 +70,27 @@
     const nextBtnDisabled = ref(true);
 
     const addBtnDisabled = computed(() => {
-        return questions.value.length == maxQuestionCount;
+        return store.questions.length === store.maxQuestionCount;
+    });
+
+    /** Включена ли кнопка удаления у каждого вопроса */
+    const canRemove = computed(() => {
+        return store.questions.length === store.minQuestionCount;
     });
 
     const addBtnClickHandler = () => {
-        if (questions.value.length < maxQuestionCount)
-            questions.value.push({ id: lastQuestId++, text: "" });
+        if (store.questions.length < store.maxQuestionCount)
+            store.questions.push({ id: store.lastQuestionId++, text: "" });
     };
 
     const removeQuestClickHandler = (questionIndex: number) => {
-        if (questions.value.length > minQuestionCount) {
-            questions.value.splice(questionIndex, 1);
-            lastQuestId--;
+        if (store.questions.length > store.minQuestionCount) {
+            store.questions.splice(questionIndex, 1);
+            store.lastQuestionId--;
         }
     };
     
-    const questTextInputHandler = () => {
-        nextBtnDisabled.value = questions.value.some(q => q.text.length === 0);
-    };
+    watch([store.questions], () => {
+        nextBtnDisabled.value = store.questions.some(q => q.text.length === 0);
+    });
 </script>
