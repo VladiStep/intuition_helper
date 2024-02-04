@@ -11,7 +11,7 @@
         width: 100%;
         height: 100%;
         min-width: 600px;
-        max-width: 850px;
+        max-width: 800px;
         max-height: 450px;
     }
 </style>

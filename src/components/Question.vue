@@ -3,7 +3,7 @@
         <TextField class="textField" v-model="question!.text" placeholder="Введите текст вопроса..."
                    @input="$emit('onTextInput')" />
         <div class="buttonsCont">
-            <button class="button" @click="handleRandBtnClick">
+            <button class="button" @click="randBtnClickHandler">
                 <SVGIcon name="random" color="blue" title="Заполнить случайным образом" />
             </button>
             <button class="button" :disabled="canRemove" @click="$emit('onRemoveClick')">
@@ -66,7 +66,7 @@
     });
     const emit = defineEmits(["onRemoveClick", "onTextInput"]);
 
-    const handleRandBtnClick = () => {
+    const randBtnClickHandler = () => {
 
     };
 </script>
