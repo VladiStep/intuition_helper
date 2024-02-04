@@ -7,6 +7,8 @@ import Question from './components/Question.vue';
 import ModalWindow from './components/ModalWindow.vue';
 
 import StartScene from './components/scenes/StartScene.vue';
+import QuestionsScene from './components/scenes/QuestionsScene.vue';
+import AnswersScene from './components/scenes/AnswersScene.vue';
 
 // Устанавливаем глобальные параметры
 (global as any).__VUE_OPTIONS_API__ = false;
@@ -27,5 +29,7 @@ app.component('Question', Question);
 app.component('ModalWindow', ModalWindow);
 
 app.component('StartScene', StartScene);
+app.component('QuestionsScene', QuestionsScene);
+app.component('AnswersScene', AnswersScene);
 
 app.mount(container);
