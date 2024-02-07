@@ -19,9 +19,10 @@
             <Btn @click="nextBtnClickHandler" :disabled="nextBtnDisabled">Следующий вопрос</Btn>
         </div>
         
-        <ModalWindow ref="modalWindow" v-model="showModal"
-                     header="Сообщение" text="Начать запись с начала?" buttons="yesno"
-                     @close="modalCloseHandler" />
+        <ModalWindow ref="modalWindow" v-model="showModal" :buttons="modalButtons" @close="modalCloseHandler"
+                     :header="(modalButtons === 'yesno') ? 'Сообщение' : 'Ошибка'"
+                     :text="(modalButtons == 'yesno') ? 'Начать запись с начала?'
+                                                      : `При попытке начать запись возникла ошибка: ${errText}`" />
     </div>
 </template>
 
@@ -98,6 +99,8 @@
 
     const modalWindow = ref<InstanceType<typeof ModalWindow>>();
     const showModal = ref(false);
+    const modalButtons = ref<"ok" | "yesno">("yesno");
+    const errText = ref("");
 
     /** Возвращает время в формате "мм:сс" */
     const getTimeString = (timeMs: number) => {
@@ -105,6 +108,12 @@
         const seconds = Math.round((timeMs - minutes * (60 * 1000)) / 1000);
         return `${minutes.toString().padStart(2, "0")}:${seconds.toString().padStart(2, "0")}`;
     };
+
+    const showError = (text: string) => {
+        modalButtons.value = "ok";
+        errText.value = text;
+        showModal.value = true;
+    }
 
     /** Сколько времени идёт запись голоса */
     const recordTime = ref(0);
@@ -121,13 +130,13 @@
 
     const nextBtnDisabled = ref(true);
 
-    store.answers = reactive(new Array<{questionID: number, text: string, audio: object | null}>(store.questions.length));
+    store.answers = reactive(new Array<{questionID: number, text: string, audioURL: string | null}>(store.questions.length));
     for (let i = 0; i < store.questions.length; i++)
-        store.answers[i] = reactive({ questionID: store.questions[i].id, text: "", audio: null });
+        store.answers[i] = reactive({ questionID: store.questions[i].id, text: "", audioURL: null });
 
     watch([store.answers, questionIndex], () => {
         const ans = store.answers[questionIndex.value];
-        nextBtnDisabled.value = ans.text.length === 0 && ans.audio === null;
+        nextBtnDisabled.value = ans.text.length === 0 && ans.audioURL === null;
     });
 
     const recordBtnClickHandler = async () => {
@@ -145,7 +154,9 @@
         }
         else {
             if (recTimeInterval === null) {
-                if (store.answers[questionIndex.value].audio !== null) {
+                if (store.answers[questionIndex.value].audioURL !== null) {
+                    modalButtons.value = "yesno";
+                    errText.value = "";
                     showModal.value = true;
                     // -> "modalCloseHandler()"
                 }
@@ -156,12 +167,13 @@
         }
     };
 
-    const startRecording = () => {
+    const startRecording = async () => {
+        if (!(await startRecordingCore()))
+            return;
+
         recordStartTime = Date.now();
         recordTime.value = 0;
         recTimeInterval = setInterval(recIntervalFunc, 1000);
-
-        startRecordingCore();
 
         isRecording.value = true;
     }
@@ -179,18 +191,59 @@
     const nextBtnClickHandler = () => {
         if (questionIndex.value == store.questions.length - 1)
         {
+            //window.URL.revokeObjectURL();
             store.currentScene.value = "AnswersScene";
             return;
         }
 
         questionIndex.value++;
+        recordStartTime = 0;
+        recordTime.value = 0;
     };
 
-    const startRecordingCore = () => {
-        store.answers[questionIndex.value].audio = null;
+    let stream: MediaStream;
+    let recorder: MediaRecorder;
+    let chunks: BlobPart[];
+    const audio = new Audio();
+
+
+    const startRecordingCore = async () => {
+        try {
+            stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+        }
+        catch (err) {
+            showError(String(err));
+            return false;
+        }
+
+        recorder = new MediaRecorder(stream);
+        chunks = [];
+        recorder.ondataavailable = (e) => {
+            chunks.push(e.data);
+        };
+        recorder.start();
+
+        const url = store.answers[questionIndex.value].audioURL;
+        if (url !== null)
+            window.URL.revokeObjectURL(url);
+        
+        store.answers[questionIndex.value].audioURL = null;
+        
+        return true;
     };
 
     const stopRecordingCore = () => {
-        store.answers[questionIndex.value].audio = {};
+        stream.getTracks().forEach(track => track.stop());
+        recorder.onstop = (e) => {
+            const blob = new Blob(chunks, { type: recorder.mimeType });
+            chunks = [];
+            const audioURL = window.URL.createObjectURL(blob);
+            store.answers[questionIndex.value].audioURL = audioURL;
+
+            audio.src = audioURL;
+            audio.play();
+        };
+
+        recorder.stop();
     };
 </script>

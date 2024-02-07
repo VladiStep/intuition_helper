@@ -7,7 +7,7 @@ export const store = {
     questions: reactive(new Array<{id: number, text: string}>()),
 
     /** Список введённых ответов на вопросы */
-    answers: reactive(new Array<{questionID: number, text: string, audio: object | null}>()),
+    answers: reactive(new Array<{questionID: number, text: string, audioURL: string | null}>()),
 
     lastQuestionId: 0,
     minQuestionCount: 2,
