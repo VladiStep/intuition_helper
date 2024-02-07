@@ -68,6 +68,8 @@
     .modalBody {
         margin: 20px 0;
         white-space: pre;
+        text-wrap: wrap;
+        max-width: 360px;
     }
 
     .modalFooter {

@@ -212,7 +212,11 @@
             stream = await navigator.mediaDevices.getUserMedia({ audio: true });
         }
         catch (err) {
-            showError(String(err));
+            let str = String(err);
+            if (str.toLowerCase().includes("permission"))
+                str = "отказано в разрешении";
+            showError(str);
+
             return false;
         }
 
@@ -239,9 +243,6 @@
             chunks = [];
             const audioURL = window.URL.createObjectURL(blob);
             store.answers[questionIndex.value].audioURL = audioURL;
-
-            audio.src = audioURL;
-            audio.play();
         };
 
         recorder.stop();
