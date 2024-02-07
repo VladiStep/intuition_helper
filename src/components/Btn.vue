@@ -1,12 +1,12 @@
 <template>
     <!-- В данном случае не нужно делать `@click="$emit('click')"` -->
-    <button class="button">
+    <button class="btn">
         <slot />
     </button>
 </template>
 
 <style lang="scss" scoped>
-    .button {
+    .btn {
         padding: 4px 15px 4px 15px;
         border-radius: 10px;
         background-color: lightblue;

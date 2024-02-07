@@ -56,7 +56,9 @@
 <script setup lang="ts">
     import { computed, ref, watch } from 'vue';
     import { store } from './../../store.ts';
+    import ModalWindow from '../ModalWindow.vue';
 
+    const modalWindow = ref<InstanceType<typeof ModalWindow>>();
     const showModal = ref(false);
 
     const nextBtnClickHandler = () => {

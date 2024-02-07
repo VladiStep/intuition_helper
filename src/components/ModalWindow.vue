@@ -2,7 +2,7 @@
     <Teleport to="body">
         <Transition name="modal">
             <div class="modalMask" v-if="showModal">
-                <div class="modalWrapper" @click="closeHandler">
+                <div class="modalWrapper" @click="closeHandler()">
                     <div class="modalContainer" @click.stop>
                         <div class="modalHeader">
                             {{ header }}
@@ -14,7 +14,13 @@
 
                         <div class="modalFooter">
                             {{ footer }}
-                            <Btn class="modalDefaultButton" @click="closeHandler">OK</Btn>
+                            <div class="modalButtonsCont">
+                                <div v-if="buttons === 'yesno'" class="modalYesNoButtons">
+                                    <Btn @click="yesClickHandler">Да</Btn>
+                                    <Btn @click="noClickHandler">Нет</Btn>
+                                </div>
+                                <Btn v-else class="modalOKButton" @click="closeHandler">OK</Btn>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -42,7 +48,8 @@
     }
 
     .modalContainer {
-        width: 300px;
+        width: fit-content;
+        min-width: 300px;
         margin: 0px auto;
         padding: 20px 30px;
         background-color: white;
@@ -67,11 +74,20 @@
         display: flex;
         width: 100%;
         align-items: baseline;
+        text-wrap: nowrap;
     }
 
-    .modalDefaultButton {
-        margin-left: auto;
+    .modalButtonsCont {
         font-size: 16px;
+        margin-left: auto;
+    }
+    .modalYesNoButtons {
+        padding-left: 16px;
+        display: flex;
+        gap: 3px;
+    }
+    .modalOKButton {
+        padding-left: 16px;
     }
 
     // "modal" - название Transition
@@ -90,13 +106,24 @@
 </style>
 
 <script setup lang="ts">
-    const emit = defineEmits(['close']);
+    import { PropType } from 'vue';
+
+    const emit = defineEmits<{
+        close: [modalResult: boolean | null]
+    }>();
 
     const showModal = defineModel<boolean>();
 
-    const closeHandler = () => {
+    const closeHandler = (modalResult: boolean | null = null) => {
         showModal.value = false;
-        emit('close');
+        emit("close", modalResult);
+    };
+
+    const yesClickHandler = () => {
+        closeHandler(true);
+    };
+    const noClickHandler = () => {
+        closeHandler(false);
     };
 
     const props = defineProps({
@@ -115,7 +142,13 @@
         footer: {
             type: String,
             default() {
-                return "Нижний текст по умолчанию";
+                return "";
+            }
+        },
+        buttons: {
+            type: String as PropType<"ok" | "yesno">,
+            default() {
+                return "ok";
             }
         }
     });
