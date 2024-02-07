@@ -213,8 +213,11 @@
         }
         catch (err) {
             let str = String(err);
-            if (str.toLowerCase().includes("permission"))
-                str = "отказано в разрешении";
+            const strLower = str.toLowerCase();
+            if (strLower.includes(("permission")))
+                str = "Отказано в разрешении.";
+            else if (strLower.includes("notfounderror"))
+                str = "Не найдено аудиоустройство."
             showError(str);
 
             return false;
