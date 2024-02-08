@@ -98,7 +98,7 @@
         showModal.value = true;
     }
 
-    /** Сколько времени идёт запись голоса */
+    /** Сколько времени идёт запись голоса, в миллисекундах */
     const recordTime = ref(0);
     const recordTimeString = computed(() => getTimeString(recordTime.value));
 
@@ -231,6 +231,12 @@
 
         const stopPromise = new Promise<void>(resolve => {
             recorder.onstop = (e) => {
+                if (recordTime.value < 1000)
+                {
+                    resolve();
+                    return;
+                }
+
                 const blob = new Blob(chunks, { type: recorder.mimeType });
                 chunks = [];
                 const audioURL = window.URL.createObjectURL(blob);
