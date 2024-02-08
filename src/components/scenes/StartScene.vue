@@ -2,9 +2,9 @@
     <div class="sceneCont">
         <div class="title">Помощник интуиции</div>
         <div class="buttonsCont">
-            <Btn @click="nextBtnClickHandler" :disabled="nextBtnDisabled">Следующий шаг</Btn>
-            <Btn @click="manualBtnClickHandler">Как пользоваться?</Btn>
-            <Btn @click="addBtnClickHandler" :disabled="addBtnDisabled">Добавить вопрос</Btn>
+            <Btn iconName="next" @click="nextBtnClickHandler" :disabled="nextBtnDisabled">Следующий шаг</Btn>
+            <Btn iconName="question" @click="manualBtnClickHandler">Как пользоваться?</Btn>
+            <Btn iconName="add" @click="addBtnClickHandler" :disabled="addBtnDisabled">Добавить вопрос</Btn>
         </div>
         <div class="questionsCont">
             <div class="questionCont" v-for="(question, index) in store.questions" :key="index">

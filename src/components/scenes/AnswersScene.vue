@@ -21,8 +21,9 @@
                 </SquareBtn>
             </div>
 
-            <Btn @click="prevBtnClickHandler" v-if="answerIndex > 0">Назад</Btn>
-            <Btn @click="nextBtnClickHandler">
+            <Btn iconName="back" @click="prevBtnClickHandler" v-if="answerIndex > 0">Назад</Btn>
+            <Btn @click="nextBtnClickHandler"
+                 :iconName="(answerIndex !== store.questions.length - 1) ? 'next' : 'return'">
                 {{ answerIndex !== store.questions.length - 1 
                    ? 'Дальше' : 'Запустить с начала' }}
             </Btn>

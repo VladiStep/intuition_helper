@@ -16,7 +16,8 @@
             </SquareBtn>
 
             <div class="recordTime">{{ recordTimeString }}</div>
-            <Btn @click="nextBtnClickHandler" :disabled="nextBtnDisabled">
+            <Btn @click="nextBtnClickHandler" :disabled="nextBtnDisabled"
+                 :iconName="(questionIndex !== store.questions.length - 1 ) ? 'next' : 'done'">
                 {{ questionIndex !== store.questions.length - 1 
                    ? 'Следующий вопрос' : 'Завершить' }}
             </Btn>
