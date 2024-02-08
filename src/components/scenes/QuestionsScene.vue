@@ -10,13 +10,16 @@
                    placeholder="Введите текст ответа..." />
         
         <div class="bottomCont">
-            <button class="button" @click="recordBtnClickHandler">
+            <SquareBtn @click="recordBtnClickHandler">
                 <SVGIcon name="mic" :color="`${ isRecording ? 'orangered' : 'gray' }`"
                          :title="`${ isRecording ? 'Остановить' : 'Начать' } запись голоса`" />
-            </button>
+            </SquareBtn>
 
             <div class="recordTime">{{ recordTimeString }}</div>
-            <Btn @click="nextBtnClickHandler" :disabled="nextBtnDisabled">Следующий вопрос</Btn>
+            <Btn @click="nextBtnClickHandler" :disabled="nextBtnDisabled">
+                {{ questionIndex !== store.questions.length - 1 
+                   ? 'Следующий вопрос' : 'Завершить' }}
+            </Btn>
         </div>
         
         <ModalWindow ref="modalWindow" v-model="showModal" :buttons="modalButtons" @close="modalCloseHandler"
@@ -63,26 +66,6 @@
 
         :nth-child(2) {
             margin-right: auto;
-        }
-    }
-
-    // TODO: создать компонент "SquareButton"
-    .button {
-        width: 100%;
-        max-width: 34px;
-        aspect-ratio: 1 / 1;
-        border-radius: 0px;
-        border-width: 1px;
-        padding: 0px;
-        line-height: 0px;
-        transition: all 0.2s ease-in-out;
-
-        &:not([disabled]) {
-            cursor: pointer;
-
-            &:hover {
-                background-color: beige;
-            }
         }
     }
 
@@ -139,6 +122,7 @@
         nextBtnDisabled.value = ans.text.length === 0 && ans.audioURL === null;
     });
 
+    // TODO: добавить cooldown
     const recordBtnClickHandler = async () => {
         if (isRecording.value) {
             if (recTimeInterval !== null) {
@@ -148,7 +132,7 @@
 
             recordStartTime = 0;
 
-            stopRecordingCore();
+            await stopRecordingCore();
 
             isRecording.value = false;
         }
@@ -161,7 +145,7 @@
                     // -> "modalCloseHandler()"
                 }
                 else {
-                    startRecording();
+                    await startRecording();
                 }
             }
         }
@@ -188,10 +172,14 @@
         recordTime.value = Date.now() - recordStartTime;
     };
 
-    const nextBtnClickHandler = () => {
+    const nextBtnClickHandler = async () => {
+        if (isRecording.value) {
+            await stopRecordingCore();
+            isRecording.value = false;
+        }
+
         if (questionIndex.value == store.questions.length - 1)
         {
-            //window.URL.revokeObjectURL();
             store.currentScene.value = "AnswersScene";
             return;
         }
@@ -201,11 +189,10 @@
         recordTime.value = 0;
     };
 
+
     let stream: MediaStream;
     let recorder: MediaRecorder;
     let chunks: BlobPart[];
-    const audio = new Audio();
-
 
     const startRecordingCore = async () => {
         try {
@@ -239,15 +226,24 @@
         return true;
     };
 
-    const stopRecordingCore = () => {
+    const stopRecordingCore = async () => {
         stream.getTracks().forEach(track => track.stop());
-        recorder.onstop = (e) => {
-            const blob = new Blob(chunks, { type: recorder.mimeType });
-            chunks = [];
-            const audioURL = window.URL.createObjectURL(blob);
-            store.answers[questionIndex.value].audioURL = audioURL;
-        };
+
+        const stopPromise = new Promise<void>(resolve => {
+            recorder.onstop = (e) => {
+                const blob = new Blob(chunks, { type: recorder.mimeType });
+                chunks = [];
+                const audioURL = window.URL.createObjectURL(blob);
+                store.answers[questionIndex.value].audioURL = audioURL;
+
+                // Чтобы можно было скачать запись
+                console.log(`Аудиозапись вопроса ${questionIndex.value + 1} - ${audioURL} (копировать вместе с "blob:")`);
+
+                resolve();
+            };
+        });
 
         recorder.stop();
+        await stopPromise;
     };
 </script>

@@ -54,7 +54,7 @@
 </style>
 
 <script setup lang="ts">
-    import { computed, ref, watch } from 'vue';
+    import { computed, onMounted, ref, watch } from 'vue';
     import { store } from './../../store.ts';
     import ModalWindow from '../ModalWindow.vue';
 
@@ -93,6 +93,9 @@
     };
     
     watch([store.questions], () => {
+        nextBtnDisabled.value = store.questions.some(q => q.text.length === 0);
+    });
+    onMounted(() => {
         nextBtnDisabled.value = store.questions.some(q => q.text.length === 0);
     });
 </script>

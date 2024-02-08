@@ -1,6 +1,7 @@
 import { createApp } from "vue";
 
 import Btn from './components/Btn.vue';
+import SquareBtn from './components/SquareBtn.vue';
 import TextField from './components/TextField.vue';
 import SVGIcon from './components/SVGIcon.vue';
 import Question from './components/Question.vue';
@@ -23,6 +24,7 @@ const app = createApp(App);
 
 // Сделать пользовательские компоненты доступными везде ("глобальными")
 app.component('Btn', Btn);
+app.component('SquareBtn', SquareBtn);
 app.component('TextField', TextField);
 app.component('SVGIcon', SVGIcon);
 app.component('Question', Question);
