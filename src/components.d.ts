@@ -1,3 +1,5 @@
+// Сделать глобальные компоненты доступными в Visual Studio Code (Volar)
+
 import Btn from './components/Btn.vue';
 import SquareBtn from './components/SquareBtn.vue';
 import TextField from './components/TextField.vue';
