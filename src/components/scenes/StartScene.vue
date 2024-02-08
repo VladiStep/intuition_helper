@@ -54,7 +54,7 @@
 </style>
 
 <script setup lang="ts">
-    import { computed, onMounted, ref, watch } from 'vue';
+    import { computed, onMounted, reactive, ref, watch } from 'vue';
     import { store } from './../../store.ts';
     import ModalWindow from '../ModalWindow.vue';
 
@@ -62,6 +62,9 @@
     const showModal = ref(false);
 
     const nextBtnClickHandler = () => {
+        store.questionRandomKeys = Array.from(store.questions.keys()); // [0, 1, 2, 3...]
+        store.questionRandomKeys.sort(() => 0.5 - Math.random());
+
         store.currentScene.value = "QuestionsScene";
     };
 

@@ -6,7 +6,7 @@
             Запишите всё в текстовое поле или сразу диктуйте в микрофон.
         </div>
 
-        <TextField class="textField" v-model="store.answers[questionIndex].text"
+        <TextField class="textField" v-model="store.answers[questionKeyIndex].text"
                    placeholder="Введите текст ответа..." />
         
         <div class="bottomCont">
@@ -106,7 +106,15 @@
 
     let recTimeInterval: NodeJS.Timeout | null = null;
 
+    /** Отображаемый номер вопроса */
     const questionIndex = ref(0);
+
+    /** Номер вопроса из случайного массива.<br>
+     *  [0, 1, 2, 3] - store.questions.keys() <br>
+     *  -↓<br>
+     *  [1, 0, 3, 2] - questionRandomKeys
+    */
+    const questionKeyIndex = computed(() => store.questionRandomKeys[questionIndex.value]);
 
     /** Идёт ли в данный момент запись */
     const isRecording = ref(false);
@@ -118,7 +126,7 @@
         store.answers[i] = reactive({ questionID: store.questions[i].id, text: "", audioURL: null });
 
     watch([store.answers, questionIndex], () => {
-        const ans = store.answers[questionIndex.value];
+        const ans = store.answers[questionKeyIndex.value];
         nextBtnDisabled.value = ans.text.length === 0 && ans.audioURL === null;
     });
 
@@ -138,7 +146,7 @@
         }
         else {
             if (recTimeInterval === null) {
-                if (store.answers[questionIndex.value].audioURL !== null) {
+                if (store.answers[questionKeyIndex.value].audioURL !== null) {
                     modalButtons.value = "yesno";
                     errText.value = "";
                     showModal.value = true;
@@ -173,12 +181,10 @@
     };
 
     const nextBtnClickHandler = async () => {
-        if (isRecording.value) {
-            await stopRecordingCore();
-            isRecording.value = false;
-        }
+        if (isRecording.value) 
+            await recordBtnClickHandler();
 
-        if (questionIndex.value == store.questions.length - 1)
+        if (questionIndex.value === store.questions.length - 1)
         {
             store.currentScene.value = "AnswersScene";
             return;
@@ -196,7 +202,13 @@
 
     const startRecordingCore = async () => {
         try {
-            stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+            stream = await navigator.mediaDevices.getUserMedia({
+                audio: {
+                    autoGainControl: false, 
+                    echoCancellation: false, 
+                    noiseSuppression: false
+                }
+            });
         }
         catch (err) {
             let str = String(err);
