@@ -234,11 +234,11 @@
         };
         recorder.start();
 
-        const url = store.answers[questionIndex.value].audioURL;
+        const url = store.answers[questionKeyIndex.value].audioURL;
         if (url !== null)
             window.URL.revokeObjectURL(url);
         
-        store.answers[questionIndex.value].audioURL = null;
+        store.answers[questionKeyIndex.value].audioURL = null;
         
         return true;
     };
@@ -257,10 +257,10 @@
                 const blob = new Blob(chunks, { type: recorder.mimeType });
                 chunks = [];
                 const audioURL = window.URL.createObjectURL(blob);
-                store.answers[questionIndex.value].audioURL = audioURL;
+                store.answers[questionKeyIndex.value].audioURL = audioURL;
 
                 // Чтобы можно было скачать запись
-                console.log(`Аудиозапись вопроса ${questionIndex.value + 1} - ${audioURL} (копировать вместе с "blob:")`);
+                console.log(`Аудиозапись ответа на вопрос ${questionKeyIndex.value + 1} - ${audioURL} (копировать вместе с "blob:")`);
 
                 resolve();
             };
