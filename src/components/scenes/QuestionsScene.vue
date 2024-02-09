@@ -134,8 +134,7 @@
         const ans = store.answers[questionKeyIndex.value];
         nextBtnDisabled.value = ans.text.length === 0 && ans.audioURL === null;
     });
-
-    // TODO: добавить cooldown
+    
     const recordBtnClickHandler = async () => {
         if (isRecording.value) {
             if (recTimeInterval !== null) {
