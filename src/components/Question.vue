@@ -24,16 +24,15 @@
     }
 
     .textField {
-        flex-grow: 1;
         height: 100%;
+        width: 95%;
         margin-right: 1%;
-        font-size: 16px;
+        font-size: 0.615em;
         font-family: inherit;
     }
 
     .buttonsCont {
-        max-width: 34px;
-        width: 8%;
+        width: 34px;
         height: 100%;
         display: flex;
         flex-wrap: wrap;
@@ -55,6 +54,16 @@
             &:hover {
                 background-color: beige;
             }
+        }
+    }
+
+    @media only screen and (max-width: 615px) {
+        .textField {
+            font-size: 0.8em;
+        }
+
+        .buttonsCont {
+            width: 24px;
         }
     }
 </style>

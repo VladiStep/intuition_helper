@@ -24,13 +24,13 @@
 
     .title {
         color: #535bd0;
-        margin-bottom: 22px;
+        margin-bottom: 0.846rem;
     }
 
     .buttonsCont {
         display: flex;
         gap: 3px;
-        margin-bottom: 10px;
+        margin-bottom: 0.3rem;
 
         :nth-child(2) {
             margin-right: auto;
@@ -43,12 +43,12 @@
         display: flex;
         flex-direction: column;
         padding: 2px;
-        gap: 20px;
+        gap: 0.65rem;
         overflow-y: overlay;
-        min-height: 250px;
+        min-height: 9.615rem;
     }
     .questionCont {
-        height: 100px;
+        height: 3.846rem;
         flex-shrink: 0;
     }
 </style>

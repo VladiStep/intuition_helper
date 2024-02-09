@@ -1,8 +1,9 @@
 <template>
     <!-- В данном случае не нужно делать `@click="$emit('click')"` -->
-    <button class="btn">
-        <SVGIcon class="icon" :name="iconName" :color="color" />
-        <div class="slot">
+    <button class="btn" :disabled="disabled">
+        <SVGIcon class="icon" :name="iconName" :color="color"
+                 v-if="iconName.length > 0" :disabled="disabled" />
+        <div class="slot" :style="iconName.length > 0 ? '' : 'display: block !important'">
             <slot />
         </div>
     </button>
@@ -10,11 +11,11 @@
 
 <style lang="scss" scoped>
     .btn {
-        padding: 4px 15px 4px 15px;
-        border-radius: 10px;
+        padding: 0.222em 0.833em;
+        border-radius: 0.555em;
         background-color: lightblue;
         transition: all 0.2s ease-in-out;
-        font-size: 18px;
+        font-size: 0.7em;
 
         &:not([disabled]) {
             cursor: pointer;
@@ -27,7 +28,7 @@
 
     .icon {
         display: none;
-        width: 22px;
+        width: 1.4em;
     }
 
     @media only screen and (max-width: 615px) {
@@ -46,7 +47,10 @@
     const props = defineProps({
         iconName: {
             type: String,
-            required: true
+            required: false,
+            default() {
+                return "";
+            }
         },
         color: {
             type: String,
@@ -57,6 +61,7 @@
             default() {
                 return "gray";
             }
-        }
+        },
+        disabled: Boolean
     });
 </script>

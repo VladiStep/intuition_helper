@@ -35,24 +35,24 @@
     .sceneCont {
         display: flex;
         flex-direction: column;
-        max-width: 710px;
+        max-width: 710px !important;
     }
 
     .status {
         color: black;
-        margin-top: 6px;
-        margin-bottom: 20px;
+        margin-top: 0.231rem;
+        margin-bottom: 0.769rem;
         font-size: 20px;
     }
     .textField {
         width: 100%;
         font-family: inherit;
-        margin-bottom: 12px;
+        margin-bottom: 0.461rem;
         background-color: yellow;
     }
     .questionText {
         height: 20%;
-        font-size: 20px;
+        font-size: 18px;
     }
     .answerText {
         height: 30%;
@@ -61,12 +61,12 @@
     
     .bottomCont {
         display: flex;
-        gap: 3px;
+        gap: 0.115rem;
         align-items: center;
     }
     .buttonsCont {
         display: flex;
-        gap: 3px;
+        gap: 0.115rem;
         margin-right: auto;
         height: 100%;
         width: 10%;

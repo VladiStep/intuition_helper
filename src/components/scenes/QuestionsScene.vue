@@ -10,13 +10,13 @@
                    placeholder="Введите текст ответа..." />
         
         <div class="bottomCont">
-            <SquareBtn @click="recordBtnClickHandler">
+            <SquareBtn id="micBtn" @click="recordBtnClickHandler">
                 <SVGIcon name="mic" :color="`${ isRecording ? 'orangered' : 'gray' }`"
                          :title="`${ isRecording ? 'Остановить' : 'Начать' } запись голоса`" />
             </SquareBtn>
 
             <div class="recordTime">{{ recordTimeString }}</div>
-            <Btn @click="nextBtnClickHandler" :disabled="nextBtnDisabled"
+            <Btn id="nextBtn" @click="nextBtnClickHandler" :disabled="nextBtnDisabled"
                  :iconName="(questionIndex !== store.questions.length - 1 ) ? 'next' : 'done'">
                 {{ questionIndex !== store.questions.length - 1 
                    ? 'Следующий вопрос' : 'Завершить' }}
@@ -26,7 +26,7 @@
         <ModalWindow ref="modalWindow" v-model="showModal" :buttons="modalButtons" @close="modalCloseHandler"
                      :header="(modalButtons === 'yesno') ? 'Сообщение' : 'Ошибка'"
                      :text="(modalButtons == 'yesno') ? 'Начать запись с начала?'
-                                                      : `При попытке начать запись возникла ошибка: ${errText}`" />
+                                                      : `При попытке начать запись возникла ошибка:\n${errText}`" />
     </div>
 </template>
 
@@ -34,13 +34,13 @@
     .sceneCont {
         display: flex;
         flex-direction: column;
-        max-width: 710px;
+        max-width: 730px !important;
     }
 
     .status {
         color: black;
-        margin-top: 6px;
-        margin-bottom: 20px;
+        margin-top: 0.23rem;
+        margin-bottom: 0.769rem;
         font-size: 20px;
     }
 
@@ -62,12 +62,16 @@
 
     .bottomCont {
         display: flex;
-        gap: 3px;
+        gap: 0.115rem;
         align-items: center;
 
         :nth-child(2) {
             margin-right: auto;
         }
+    }
+
+    #micBtn {
+        width: 28px;
     }
 
     .recordTime {

@@ -6,10 +6,10 @@
     .textarea {
         resize: none;
         box-sizing: border-box;
-        border-radius: 10px;
-        padding: 6px;
-        width: 256px;
-        height: 72px;
+        border-radius: 0.555em;
+        padding: 0.333em;
+        width: 14.222em;
+        height: 4em;
 
         ::placeholder {
             color: #969696;

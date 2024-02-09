@@ -49,14 +49,15 @@
 
     .modalContainer {
         width: fit-content;
-        min-width: 300px;
+        min-width: 16.666em;
         margin: 0px auto;
-        padding: 20px 30px;
+        padding: 1.111em 1.666em;
         background-color: white;
         border-radius: 2px;
         box-shadow: 0 2px 8px rgba(0, 0, 0, 0.33);
         transition: all 0.2s ease;
         font-family: Arial, Helvetica, sans-serif;
+        font-size: min(0.8rem, 18px);
     }
 
     .modalHeader {
@@ -66,10 +67,10 @@
     }
 
     .modalBody {
-        margin: 20px 0;
+        margin: 1.111em 0;
         white-space: pre;
         text-wrap: wrap;
-        max-width: 360px;
+        max-width: 20em;
     }
 
     .modalFooter {
@@ -80,7 +81,7 @@
     }
 
     .modalButtonsCont {
-        font-size: 16px;
+        font-size: 1.2em;
         margin-left: auto;
     }
     .modalYesNoButtons {
@@ -89,7 +90,7 @@
         gap: 3px;
     }
     .modalOKButton {
-        padding-left: 16px;
+        //padding-left: 16px;
     }
 
     // "modal" - название Transition
