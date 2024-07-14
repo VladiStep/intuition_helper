@@ -111,7 +111,7 @@
 
     let recordStartTime = 0;
 
-    let recTimeInterval: NodeJS.Timeout | null = null;
+    let recTimeInterval: number | null = null;
 
     /** Отображаемый номер вопроса */
     const questionIndex = ref(0);
