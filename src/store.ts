@@ -1,4 +1,4 @@
-import { defineStore } from "pinia";
+import { acceptHMRUpdate, defineStore } from "pinia";
 
 export const useStore = defineStore("store", {
     state: () => ({
@@ -30,3 +30,7 @@ export const useStore = defineStore("store", {
         }
     }
 });
+
+if (import.meta.webpackHot) {
+    import.meta.webpackHot.accept(acceptHMRUpdate(useStore, import.meta.webpackHot));
+}
