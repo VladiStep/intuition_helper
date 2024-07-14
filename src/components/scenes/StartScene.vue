@@ -2,7 +2,7 @@
     <div class="sceneCont">
         <div class="title">Помощник интуиции</div>
         <div class="buttonsCont">
-            <Btn iconName="next" @click="nextBtnClickHandler" :disabled="nextBtnDisabled">Следующий шаг</Btn>
+            <Btn iconName="next" @click="nextBtnClickHandler" :disabled="store.anyQuestionIsEmpty">Следующий шаг</Btn>
             <Btn iconName="question" @click="manualBtnClickHandler">Как пользоваться?</Btn>
             <Btn iconName="add" @click="addBtnClickHandler" :disabled="addBtnDisabled">Добавить вопрос</Btn>
         </div>
@@ -74,8 +74,6 @@
         showModal.value = true;
     };
 
-    const nextBtnDisabled = ref(true);
-
     const addBtnDisabled = computed(() => {
         return store.questions.length === store.maxQuestionCount;
     });
@@ -96,11 +94,4 @@
             store.lastQuestionId--;
         }
     };
-    
-    watch(() => store.anyQuestionIsEmpty, () => {
-        nextBtnDisabled.value = store.anyQuestionIsEmpty;
-    });
-    onMounted(() => {
-        nextBtnDisabled.value = store.anyQuestionIsEmpty;
-    });
 </script>
