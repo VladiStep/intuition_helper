@@ -1,5 +1,5 @@
 <template>
-    <component id="mainCont" :is="store.currentScene.value" />
+    <component id="mainCont" :is="store.currentScene" />
 </template>
 
 <style lang="scss" scoped>
@@ -22,10 +22,15 @@
 </style>
 
 <script setup lang="ts">
-    import { reactive } from 'vue';
-    import { store } from './store.ts';
+    import { reactive } from "vue";
+    import { useStore } from "./store";
+    import { storeToRefs } from "pinia";
 
-    store.questions = reactive(new Array<{id: number, text: string}>(store.minQuestionCount));
-    for (let i = 0; i < store.minQuestionCount; i++)
-        store.questions[i] = reactive({ id: store.lastQuestionId++, text: "" });
+    const store = useStore();
+    const { minQuestionCount } = store;
+    const { questions } = storeToRefs(store);
+
+    questions.value = new Array<{id: number, text: string}>(minQuestionCount);
+    for (let i = 0; i < minQuestionCount; i++)
+        questions.value[i] = reactive({ id: store.lastQuestionId++, text: "" });
 </script>

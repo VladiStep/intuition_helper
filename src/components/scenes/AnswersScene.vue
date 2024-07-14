@@ -74,8 +74,11 @@
 </style>
 
 <script setup lang="ts">
-    import { onMounted, ref, watch } from 'vue';
-    import { store } from './../../store.ts';
+    import { onMounted, ref, watch } from "vue";
+    import { useStore } from "./../../store";
+
+    const store = useStore();
+    const { revokeAudioURLs } = store;
 
     const answerIndex = ref(0);
 
@@ -91,13 +94,9 @@
             if (isPlaying.value)
                 stopBtnClickHandler();
 
-            store.answers.forEach(a => {
-                if (a.audioURL !== null) {
-                    window.URL.revokeObjectURL(a.audioURL);
-                }
-            });
+            revokeAudioURLs();
 
-            store.currentScene.value = "StartScene";
+            store.currentScene = "StartScene";
             return;
         }
 

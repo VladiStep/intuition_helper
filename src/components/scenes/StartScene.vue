@@ -54,9 +54,11 @@
 </style>
 
 <script setup lang="ts">
-    import { computed, onMounted, reactive, ref, watch } from 'vue';
-    import { store } from './../../store.ts';
+    import { computed, onMounted, ref, watch } from "vue";
+    import { useStore } from "./../../store";
     import ModalWindow from '../ModalWindow.vue';
+
+    const store = useStore();
 
     const modalWindow = ref<InstanceType<typeof ModalWindow>>();
     const showModal = ref(false);
@@ -65,7 +67,7 @@
         store.questionRandomKeys = Array.from(store.questions.keys()); // [0, 1, 2, 3...]
         store.questionRandomKeys.sort(() => 0.5 - Math.random());
 
-        store.currentScene.value = "QuestionsScene";
+        store.currentScene = "QuestionsScene";
     };
 
     const manualBtnClickHandler = () => {
@@ -95,10 +97,10 @@
         }
     };
     
-    watch([store.questions], () => {
-        nextBtnDisabled.value = store.questions.some(q => q.text.length === 0);
+    watch(() => store.anyQuestionIsEmpty, () => {
+        nextBtnDisabled.value = store.anyQuestionIsEmpty;
     });
     onMounted(() => {
-        nextBtnDisabled.value = store.questions.some(q => q.text.length === 0);
+        nextBtnDisabled.value = store.anyQuestionIsEmpty;
     });
 </script>

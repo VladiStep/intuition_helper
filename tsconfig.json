@@ -6,6 +6,6 @@
       "jsx": "preserve",
       "moduleResolution": "node",
       "allowSyntheticDefaultImports": true,
-	    "allowImportingTsExtensions": true
+	    //"allowImportingTsExtensions": true
     }
   }

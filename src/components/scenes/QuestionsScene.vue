@@ -81,9 +81,11 @@
 </style>
 
 <script setup lang="ts">
-    import { computed, reactive, ref, watch } from 'vue';
-    import { store } from './../../store.ts';
+    import { computed, ref, watch } from "vue";
+    import { useStore } from "./../../store";
     import ModalWindow from '../ModalWindow.vue';
+
+    const store = useStore();
 
     const modalWindow = ref<InstanceType<typeof ModalWindow>>();
     const showModal = ref(false);
@@ -126,9 +128,9 @@
 
     const nextBtnDisabled = ref(true);
 
-    store.answers = reactive(new Array<{questionID: number, text: string, audioURL: string | null}>(store.questions.length));
+    store.answers = new Array<{questionID: number, text: string, audioURL: string | null}>(store.questions.length);
     for (let i = 0; i < store.questions.length; i++)
-        store.answers[i] = reactive({ questionID: store.questions[i].id, text: "", audioURL: null });
+        store.answers[i] = { questionID: store.questions[i].id, text: "", audioURL: null };
 
     watch([store.answers, questionIndex], () => {
         const ans = store.answers[questionKeyIndex.value];
@@ -190,7 +192,7 @@
 
         if (questionIndex.value === store.questions.length - 1)
         {
-            store.currentScene.value = "AnswersScene";
+            store.currentScene = "AnswersScene";
             return;
         }
 
